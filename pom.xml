@@ -33,8 +33,15 @@
 		<url>https://github.com/Farancibiat/checkout-retail</url>
 	</scm>
 	<properties>
-		<java.version>25</java.version>
+		<java.version>17</java.version>
 	</properties>
+
+	<profiles>
+		<!-- Perfil que Railway activa con -Pproduction al hacer el build. -->
+		<profile>
+			<id>production</id>
+		</profile>
+	</profiles>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

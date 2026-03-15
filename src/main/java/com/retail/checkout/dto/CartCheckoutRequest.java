@@ -25,6 +25,6 @@ public record CartCheckoutRequest(
         ShippingAddressRequest shippingAddress,
 
         @NotBlank(message = "paymentMethod es requerido")
-        @Schema(description = "Medio de pago (soportado: DEBIT)", example = "DEBIT", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "Medio de pago (soportado: DEBITO)", example = "DEBITO", requiredMode = Schema.RequiredMode.REQUIRED)
         String paymentMethod
 ) {}

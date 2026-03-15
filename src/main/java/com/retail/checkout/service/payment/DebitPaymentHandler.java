@@ -8,7 +8,7 @@ import java.util.UUID;
 @Component
 public class DebitPaymentHandler implements PaymentMethodHandler {
 
-    private static final String METHOD_ID = "DEBIT";
+    private static final String METHOD_ID = "DEBITO";
     private static final BigDecimal DISCOUNT_PERCENT = new BigDecimal("10");
 
     @Override
