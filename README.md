@@ -29,6 +29,10 @@ Servicio de checkout para retail: procesa un carrito, aplica promociones y descu
    - **OpenAPI (Swagger UI):** [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) — ver endpoints, esquemas de request/response y probar el checkout desde el navegador. (Si no carga, probar [swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html).)
    - **Spec OpenAPI (JSON):** [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs) — documento OpenAPI 3 en bruto.
 
+## CORS
+
+Para efectos de esta prueba, la API acepta llamadas desde localhost (`http://localhost:5173`, `http://localhost:3000`, `http://localhost:8080`) y desde el frontend desplegado (`https://walmart.farancibiat.cl`). Dejar abierto a localhost permite probar el flujo completo en desarrollo sin restricciones adicionales.
+
 ## Definición de archivos del proyecto
 
 ### Dominio
