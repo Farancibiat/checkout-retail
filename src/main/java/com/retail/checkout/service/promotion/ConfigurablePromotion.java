@@ -38,7 +38,7 @@ public class ConfigurablePromotion implements Promotion {
                                 .multiply(percent)
                                 .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
                         String description = buildQuantityDiscountDescription(line.sku(), config);
-                        result.add(new DiscountAppliedDto("PROMOTION", description, discountAmount));
+                        result.add(new DiscountAppliedDto("PROMOTION", description, discountAmount, line.sku()));
                     }
                 }
             }

@@ -70,7 +70,8 @@ public class CheckoutService {
         allDiscounts.add(new DiscountAppliedDto(
                 "PAYMENT",
                 paymentHandler.getDiscountPercentage() + "% descuento por pago con " + request.paymentMethod(),
-                paymentDiscount
+                paymentDiscount,
+                null
         ));
 
         BigDecimal total = totalAfterPromotions.subtract(paymentDiscount).setScale(2, RoundingMode.HALF_UP);
