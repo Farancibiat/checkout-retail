@@ -40,5 +40,5 @@ La API está desplegada en Railway. Puedes probar los endpoints sin ejecutar el 
 
 ## CORS
 
-Para efectos de esta prueba, la API local acepta llamadas desde localhost (`http://localhost:5173`, `http://localhost:3000`, `http://localhost:8080`). Para cargar en un entorno, debes utilizar el archivo .env.example para guiarte al ingresar las variebles de entorno.
+Por defectla API local acepta llamadas desde localhost (`http://localhost:5173`, `http://localhost:3000`, `http://localhost:8080`). Para cargar en un entorno, debes utilizar el archivo .env.example para guiarte al ingresar las variebles de entorno.
 
