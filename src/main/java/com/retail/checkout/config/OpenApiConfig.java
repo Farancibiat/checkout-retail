@@ -1,19 +1,34 @@
 package com.retail.checkout.config;
 
 import com.retail.checkout.controller.CheckoutController;
+import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.HandlerMethod;
+
+import java.util.List;
 
 @Configuration
 public class OpenApiConfig {
 
     private static final String TAG_CHECKOUT = "Checkout";
     private static final String TAG_CATALOGO = "Catálogo";
+
+    /**
+     * Server URL relativa para que Swagger UI use el mismo protocolo y host que la página
+     * (evita mixed-content cuando la app está en HTTPS y el spec indicaba HTTP).
+     */
+    @Bean
+    public OpenAPI openAPI() {
+        Server server = new Server();
+        server.setUrl("/");
+        return new OpenAPI().servers(List.of(server));
+    }
 
     @Bean
     public OperationCustomizer checkoutApiDocs() {
