@@ -4,7 +4,6 @@ import com.retail.checkout.domain.Product;
 import com.retail.checkout.dto.*;
 import com.retail.checkout.repository.ProductRepository;
 import com.retail.checkout.service.payment.PaymentMethodHandler;
-import com.retail.checkout.service.promotion.Promotion;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,14 +15,14 @@ import java.util.List;
 public class CheckoutService {
 
     private final ProductRepository productRepository;
-    private final List<Promotion> promotions;
+    private final PromotionDiscountService promotionDiscountService;
     private final List<PaymentMethodHandler> paymentHandlers;
 
     public CheckoutService(ProductRepository productRepository,
-                           List<Promotion> promotions,
+                           PromotionDiscountService promotionDiscountService,
                            List<PaymentMethodHandler> paymentHandlers) {
         this.productRepository = productRepository;
-        this.promotions = promotions != null ? promotions : List.of();
+        this.promotionDiscountService = promotionDiscountService;
         this.paymentHandlers = paymentHandlers != null ? paymentHandlers : List.of();
     }
 
@@ -46,13 +45,7 @@ public class CheckoutService {
                 request.paymentMethod()
         );
 
-        BigDecimal totalPromotionDiscounts = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
-        for (Promotion promotion : promotions) {
-            List<DiscountAppliedDto> applied = promotion.apply(context);
-            for (DiscountAppliedDto d : applied) {
-                totalPromotionDiscounts = totalPromotionDiscounts.add(d.amount());
-            }
-        }
+        BigDecimal totalPromotionDiscounts = promotionDiscountService.computeTotalPromotionDiscount(context.lineItems());
 
         List<DiscountAppliedDto> allDiscounts = new ArrayList<>();
         allDiscounts.add(new DiscountAppliedDto("PROMOTION", totalPromotionDiscounts, null));
