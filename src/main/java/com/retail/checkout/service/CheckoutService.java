@@ -55,9 +55,7 @@ public class CheckoutService {
         }
 
         List<DiscountAppliedDto> allDiscounts = new ArrayList<>();
-        if (totalPromotionDiscounts.compareTo(BigDecimal.ZERO) > 0) {
-            allDiscounts.add(new DiscountAppliedDto("PROMOTION", totalPromotionDiscounts, null));
-        }
+        allDiscounts.add(new DiscountAppliedDto("PROMOTION", totalPromotionDiscounts, null));
 
         BigDecimal totalAfterPromotions = subtotal.subtract(totalPromotionDiscounts).setScale(2, RoundingMode.HALF_UP);
 
