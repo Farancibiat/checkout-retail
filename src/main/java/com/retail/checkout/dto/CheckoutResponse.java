@@ -8,5 +8,6 @@ public record CheckoutResponse(
         BigDecimal subtotal,
         List<DiscountAppliedDto> discounts,
         BigDecimal total,
-        PaymentConfirmationDto payment
+        PaymentConfirmationDto payment,
+        String paymentMethod
 ) {}

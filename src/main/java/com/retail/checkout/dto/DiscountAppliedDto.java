@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 
 public record DiscountAppliedDto(
         String type,
-        String description,
         BigDecimal amount,
-        @JsonInclude(JsonInclude.Include.NON_NULL) String sku
+        @JsonInclude(JsonInclude.Include.NON_NULL) BigDecimal percent
 ) {}

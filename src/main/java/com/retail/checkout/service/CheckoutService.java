@@ -46,15 +46,17 @@ public class CheckoutService {
                 request.paymentMethod()
         );
 
-        List<DiscountAppliedDto> allDiscounts = new ArrayList<>();
         BigDecimal totalPromotionDiscounts = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
-
         for (Promotion promotion : promotions) {
             List<DiscountAppliedDto> applied = promotion.apply(context);
-            allDiscounts.addAll(applied);
             for (DiscountAppliedDto d : applied) {
                 totalPromotionDiscounts = totalPromotionDiscounts.add(d.amount());
             }
+        }
+
+        List<DiscountAppliedDto> allDiscounts = new ArrayList<>();
+        if (totalPromotionDiscounts.compareTo(BigDecimal.ZERO) > 0) {
+            allDiscounts.add(new DiscountAppliedDto("PROMOTION", totalPromotionDiscounts, null));
         }
 
         BigDecimal totalAfterPromotions = subtotal.subtract(totalPromotionDiscounts).setScale(2, RoundingMode.HALF_UP);
@@ -69,9 +71,8 @@ public class CheckoutService {
                 .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
         allDiscounts.add(new DiscountAppliedDto(
                 "PAYMENT",
-                paymentHandler.getDiscountPercentage() + "% descuento por pago con " + request.paymentMethod(),
                 paymentDiscount,
-                null
+                paymentHandler.getDiscountPercentage()
         ));
 
         BigDecimal total = totalAfterPromotions.subtract(paymentDiscount).setScale(2, RoundingMode.HALF_UP);
@@ -82,7 +83,8 @@ public class CheckoutService {
                 subtotal,
                 allDiscounts,
                 total,
-                new PaymentConfirmationDto(true, transactionId)
+                new PaymentConfirmationDto(true, transactionId),
+                request.paymentMethod()
         );
     }
 }

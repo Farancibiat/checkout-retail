@@ -28,7 +28,7 @@ public class CatalogService {
         List<ProductCatalogEntryDto> result = new ArrayList<>(products.size());
         for (Product product : products) {
             List<PromotionSummaryDto> promotionDtos = catalogLoader.getPromotionConfigs(product.sku()).stream()
-                    .map(config -> configToSummary(product.sku(), config))
+                    .map(CatalogService::configToSummary)
                     .collect(Collectors.toList());
             result.add(new ProductCatalogEntryDto(
                     product.sku(),
@@ -40,13 +40,11 @@ public class CatalogService {
         return result;
     }
 
-    private static PromotionSummaryDto configToSummary(String sku, PromotionConfig config) {
-        if (PromotionConfig.TYPE_QUANTITY_DISCOUNT.equals(config.type())) {
-            int minQty = config.getMinQuantityOrDefault();
-            String percentStr = config.getPercentOrDefault().toString();
-            String description = percentStr + "% dcto. por " + minQty + "+ unidades de " + sku;
-            return new PromotionSummaryDto("PROMOTION", description);
-        }
-        return new PromotionSummaryDto(config.type(), config.type());
+    private static PromotionSummaryDto configToSummary(PromotionConfig config) {
+        return new PromotionSummaryDto(
+                config.type(),
+                config.getMinQuantityOrDefault(),
+                config.getPercentOrDefault()
+        );
     }
 }

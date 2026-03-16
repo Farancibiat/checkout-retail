@@ -37,8 +37,7 @@ public class ConfigurablePromotion implements Promotion {
                         BigDecimal discountAmount = line.lineTotal()
                                 .multiply(percent)
                                 .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
-                        String description = buildQuantityDiscountDescription(line.sku(), config);
-                        result.add(new DiscountAppliedDto("PROMOTION", description, discountAmount, line.sku()));
+                        result.add(new DiscountAppliedDto("PROMOTION", discountAmount, percent));
                     }
                 }
             }
@@ -53,22 +52,16 @@ public class ConfigurablePromotion implements Promotion {
             return Optional.empty();
         }
         List<PromotionSummaryDto> summaries = configs.stream()
-                .map(c -> configToSummary(sku, c))
+                .map(ConfigurablePromotion::configToSummary)
                 .collect(Collectors.toList());
         return summaries.isEmpty() ? Optional.empty() : Optional.of(summaries.get(0));
     }
 
-    private PromotionSummaryDto configToSummary(String sku, PromotionConfig config) {
-        if (PromotionConfig.TYPE_QUANTITY_DISCOUNT.equals(config.type())) {
-            String description = buildQuantityDiscountDescription(sku, config);
-            return new PromotionSummaryDto("PROMOTION", description);
-        }
-        return new PromotionSummaryDto(config.type(), config.type());
-    }
-
-    private static String buildQuantityDiscountDescription(String sku, PromotionConfig config) {
-        int minQty = config.getMinQuantityOrDefault();
-        BigDecimal percent = config.getPercentOrDefault();
-        return percent + "% dcto. por " + minQty + "+ unidades de " + sku;
+    private static PromotionSummaryDto configToSummary(PromotionConfig config) {
+        return new PromotionSummaryDto(
+                config.type(),
+                config.getMinQuantityOrDefault(),
+                config.getPercentOrDefault()
+        );
     }
 }
